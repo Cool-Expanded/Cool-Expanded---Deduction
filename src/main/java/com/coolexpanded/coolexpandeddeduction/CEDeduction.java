@@ -1,5 +1,9 @@
 package com.coolexpanded.coolexpandeddeduction;
 
+import net.minecraft.world.food.FoodProperties;
+import net.minecraft.world.item.Item;
+import net.neoforged.neoforge.registries.DeferredItem;
+import net.neoforged.neoforge.registries.DeferredRegister;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -26,7 +30,7 @@ public class CEDeduction {
     // Create a Deferred Register to hold Blocks which will all be registered under the "examplemod" namespace
 //    public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(MODID);
 //    // Create a Deferred Register to hold Items which will all be registered under the "examplemod" namespace
-//    public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(MODID);
+    public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(MODID);
 //    // Create a Deferred Register to hold CreativeModeTabs which will all be registered under the "examplemod" namespace
 //    public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID);
 //
@@ -36,8 +40,7 @@ public class CEDeduction {
 //    public static final DeferredItem<BlockItem> EXAMPLE_BLOCK_ITEM = ITEMS.registerSimpleBlockItem("example_block", EXAMPLE_BLOCK);
 //
 //    // Creates a new food item with the id "examplemod:example_id", nutrition 1 and saturation 2
-//    public static final DeferredItem<Item> EXAMPLE_ITEM = ITEMS.registerSimpleItem("example_item", new Item.Properties().food(new FoodProperties.Builder()
-//            .alwaysEdible().nutrition(1).saturationModifier(2f).build()));
+    public static final DeferredItem<Item> FINGERPRINT_PAPER  = ITEMS.registerSimpleItem("fingerprint_paper", new Item.Properties().stacksTo(16));
 //
 //    // Creates a creative tab with the id "examplemod:example_tab" for the example item, that is placed after the combat tab
 //    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> EXAMPLE_TAB = CREATIVE_MODE_TABS.register("example_tab", () -> CreativeModeTab.builder()
@@ -56,8 +59,8 @@ public class CEDeduction {
 
 //        // Register the Deferred Register to the mod event bus so blocks get registered
 //        BLOCKS.register(modEventBus);
-//        // Register the Deferred Register to the mod event bus so items get registered
-//        ITEMS.register(modEventBus);
+
+       ITEMS.register(modEventBus);
 //        // Register the Deferred Register to the mod event bus so tabs get registered
 //        CREATIVE_MODE_TABS.register(modEventBus);
 //
