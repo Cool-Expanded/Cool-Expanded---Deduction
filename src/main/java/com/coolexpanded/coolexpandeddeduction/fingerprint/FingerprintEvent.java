@@ -72,14 +72,38 @@ public class FingerprintEvent {
                                                         EntityArgument.getPlayer(context, "player"),
                                                         StringArgumentType.getString(context, "id")
                                                 ))
+                        .then(Commands.literal("regenerate")
+                                .then(Commands.argument("player", EntityArgument.player())
+                                        .executes(context -> regenerateFingerprint(
+                                                 context.getSource(),
+                                                 EntityArgument.getPlayer(context, "player")
+                                                                ))
+                                                        )
+                                                )
                                         )
                                 )
                         )
         );
     }
 
+    private static int regenerateFingerprint(
+            net.minecraft.commands.CommandSourceStack source,
+            ServerPlayer target
+    ) {
+        FingerprintData data = FingerprintData.get(source.getServer());
 
+        String newId = data.generateUniqueId();
 
+        data.setId(target.getUUID(), newId);
+
+        source.sendSuccess(() -> Component.literal(
+                "New fingerprint of " +
+                        target.getGameProfile().getName() +
+                        ": " + newId
+        ), true);
+
+        return 1;
+    }
 
     private static int checkFingerprint(
             net.minecraft.commands.CommandSourceStack source,
@@ -94,6 +118,7 @@ public class FingerprintEvent {
     }
 
 
+
     private static int changeFingerprint(
             net.minecraft.commands.CommandSourceStack source,
             ServerPlayer target,
@@ -105,9 +130,15 @@ public class FingerprintEvent {
             newId = data.generateUniqueId();
         } else {
             newId = customId.toUpperCase(Locale.ROOT);
-            if (!newId.matches("[A-Z0-9]{8,10}")) {
+            if (newId.matches(".*\\d.*")) {
                 source.sendFailure(Component.literal(
-                        "ID must be 8-10 characters: letters A-Z and digits 0-9"
+                        "Fingerprint cannot contain digits"
+                ));
+                return 0;
+            }
+            if (newId.length() < 8 || newId.length() > 10) {
+                source.sendFailure(Component.literal(
+                        "Fingerprint must be 8-10 characters"
                 ));
                 return 0;
             }
@@ -189,8 +220,11 @@ public class FingerprintEvent {
                                 .withStyle(ChatFormatting.GRAY)
                                 .withStyle(style -> style.withItalic(false)),
                         Component.literal(fingerprintId)
-                                .withStyle(ChatFormatting.AQUA)
-                                .withStyle(style -> style.withItalic(false))
+                                .withStyle(style -> style
+                                        .withFont(net.minecraft.resources.ResourceLocation.parse("minecraft:alt"))
+                                        .withColor(ChatFormatting.AQUA)
+                                        .withItalic(false)
+                                )
                 ))
         );
 

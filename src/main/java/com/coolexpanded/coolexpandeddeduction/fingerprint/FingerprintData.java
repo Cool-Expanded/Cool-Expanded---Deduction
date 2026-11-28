@@ -14,7 +14,7 @@ import java.util.UUID;
 
 public class FingerprintData extends SavedData {
 
-    private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private static final Random RANDOM = new Random();
 
     private final Map<UUID, String> fingerprints = new HashMap<>();
@@ -77,7 +77,7 @@ public class FingerprintData extends SavedData {
             }
 
             id = result.toString();
-        } while (isTaken(id, null));
+        } while (isTaken(id, null) || id.matches(".*\\d.*"));
 
         return id;
     }
